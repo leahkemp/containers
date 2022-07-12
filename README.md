@@ -1,6 +1,6 @@
 # Recipes for containerised software
 
-Naming convention fo recipe files:
+Naming convention for recipe files:
 
 - Singularity or docker container
 - Software name
