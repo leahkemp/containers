@@ -1,0 +1,13 @@
+Bootstrap: docker
+From: alpine:3.16.0
+
+%help
+This is a containerised version of GNU parallel (https://www.gnu.org/software/parallel/)
+
+%labels
+    MAINTAINER Leah Kemp (leah.kemp@esr.cri.nz)
+    VERSION 0.1
+
+%post
+    apk update
+    apk add parallel
