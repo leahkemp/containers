@@ -10,7 +10,7 @@ This is a containerised version of GNU parallel (https://www.gnu.org/software/pa
 
 %post
     # install mamba
-    conda install -c conda-forge mamba
+    conda install -c conda-forge mamba=0.24.0
 
     # use mamba to install GNU parallel
     mamba create  --name parallel_20220522_singularity -c conda-forge -c anaconda -c bioconda  parallel=20220522
@@ -29,5 +29,6 @@ This is a containerised version of GNU parallel (https://www.gnu.org/software/pa
     echo "conda activate parallel_20220522_singularity" >> $SINGULARITY_ROOTFS/$SINGULARITY_ENVIRONMENT
 
 %runscript
+    # account for citation prompt
     echo 'will cite' | parallel --citation || true
     exec "$@"
