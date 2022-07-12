@@ -1,0 +1,33 @@
+Bootstrap: docker
+From: continuumio/miniconda3:4.12.0
+
+%help
+This is a containerised version of GNU parallel (https://www.gnu.org/software/parallel/)
+
+%labels
+    MAINTAINER Leah Kemp (leah.kemp@esr.cri.nz)
+    VERSION 0.1
+
+%post
+    # install mamba
+    conda install -c conda-forge mamba
+
+    # use mamba to install GNU parallel
+    mamba create  --name parallel_20220522_singularity -c conda-forge -c anaconda -c bioconda  parallel=20220522
+    
+    # finally have a cleanup of conda to save space in the container
+    conda clean -afy  \
+    && find /opt/conda/ -follow -type f -name '*.a' -delete \
+    && find /opt/conda/ -follow -type f -name '*.pyc' -delete \
+    && find /opt/conda/ -follow -type f -name '*.js.map' -delete \
+    && find /opt/conda/ -follow -type f -name 'activate*64.sh' -delete
+
+    # and set the env to auto-start when you exec a command
+    mkdir -p $SINGULARITY_ROOTFS/.singularity.d/env
+    echo "export LC_ALL=C.UTF-8"                    >> $SINGULARITY_ROOTFS/$SINGULARITY_ENVIRONMENT
+    echo "source /opt/conda/etc/profile.d/conda.sh" >> $SINGULARITY_ROOTFS/$SINGULARITY_ENVIRONMENT
+    echo "conda activate parallel_20220522_singularity" >> $SINGULARITY_ROOTFS/$SINGULARITY_ENVIRONMENT
+
+%runscript
+    echo 'will cite' | parallel --citation || true
+    exec "$@"
